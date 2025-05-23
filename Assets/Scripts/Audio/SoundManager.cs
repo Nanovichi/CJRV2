@@ -1,6 +1,7 @@
 
 
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -24,6 +25,9 @@ namespace SmallHedge.SoundManager
 
         private void Start()
         {
+
+          
+
             SoundManager.PlaySound(SoundType.Music,audioSource,0.1f);
         }
 

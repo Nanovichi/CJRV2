@@ -12,4 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bcb08e4829b9f0449e4ecaa5a700d0b, type: 3}
   m_Name: Sounds
   m_EditorClassIdentifier: 
-  sounds: []
+  sounds:
+  - name: BoosterTake
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: a4c51b02168e5c24e893409cf5740715, type: 3}
+  - name: Music
+    volume: 1
+    mixer: {fileID: 0}
+    sounds:
+    - {fileID: 8300000, guid: 3903f8bb446b7dd419a850fdf1462cb4, type: 3}
+    - {fileID: 8300000, guid: 8a930c39a4372d740ab53e0ee0332eb7, type: 3}
+    - {fileID: 8300000, guid: 28fa31cda0fc4444992eabf5db24ad5e, type: 3}
+    - {fileID: 8300000, guid: 2d61b90384690b740ba006cf7e565625, type: 3}
+    - {fileID: 8300000, guid: 2ce727a12957f854e9f41ff58a9c69b2, type: 3}
+  - name: Menu
+    volume: 1
+    mixer: {fileID: 0}
+    sounds: []

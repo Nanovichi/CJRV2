@@ -23,6 +23,13 @@ public class AiMovement : MonoBehaviour
         agent.avoidancePriority = Random.Range(50, 100);
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
 
+        string[] lanes = { "Walkable", "Walkable3", "Walkable2", "Walkable4" };
+        string chosenLane = lanes[Random.Range(0, lanes.Length)];
+        agent.areaMask = 1 << NavMesh.GetAreaFromName(chosenLane);
+
+        Debug.Log(agent.areaMask);
+
+
         speedChangeTimer = speedChangeInterval;
 
         if (waypoints != null && waypoints.Count > 0)

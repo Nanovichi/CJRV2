@@ -1,4 +1,5 @@
 using EasyPeasyFirstPersonController;
+using SmallHedge.SoundManager;
 using UnityEngine;
 
 public class Booster : MonoBehaviour
@@ -11,6 +12,7 @@ public class Booster : MonoBehaviour
         var controller = other.GetComponent<FirstPersonController>();
         if (controller != null)
         {
+            SoundManager.PlaySound(SoundType.BoosterTake);
             controller.ApplySpeedBoost(boostMultiplier, boostDuration);
             Destroy(gameObject); // optional: remove pickup after use
         }
