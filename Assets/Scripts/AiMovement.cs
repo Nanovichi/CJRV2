@@ -4,8 +4,13 @@ using UnityEngine.AI;
 
 public class AiMovement : MonoBehaviour
 {
-    public List<Transform> waypoints; // Assign waypoints in the Inspector
+    public List<Transform> waypoints;
     public float stoppingDistance = 0.5f;
+
+    public float speedChangeInterval = 3f;
+    private float speedChangeTimer;
+    private float minSpeed = 3f;
+    private float maxSpeed = 8f;
 
     private NavMeshAgent agent;
     private int currentWaypointIndex = 0;
@@ -14,11 +19,11 @@ public class AiMovement : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
 
-        // Randomize agent settings
-        agent.speed = Random.Range(5f, 10f);
+        agent.speed = Random.Range(minSpeed, maxSpeed);
         agent.avoidancePriority = Random.Range(50, 100);
-        agent.radius = 0.4f;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+
+        speedChangeTimer = speedChangeInterval;
 
         if (waypoints != null && waypoints.Count > 0)
         {
@@ -30,7 +35,13 @@ public class AiMovement : MonoBehaviour
     {
         if (waypoints.Count == 0) return;
 
-        // Check if agent reached the current waypoint
+        speedChangeTimer -= Time.deltaTime;
+        if (speedChangeTimer <= 0f)
+        {
+            agent.speed = Random.Range(minSpeed, maxSpeed);
+            speedChangeTimer = speedChangeInterval;
+        }
+
         if (!agent.pathPending && agent.remainingDistance <= stoppingDistance)
         {
             currentWaypointIndex++;

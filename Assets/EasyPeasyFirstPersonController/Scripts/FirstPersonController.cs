@@ -70,6 +70,11 @@ namespace EasyPeasyFirstPersonController
         // HeadBob
         public float CurrentCameraHeight => isCrouching || isSliding ? crouchCameraHeight : originalCameraParentHeight;
 
+
+        private bool isSpeedBoosted = false;
+        private Coroutine speedBoostCoroutine;
+
+
         private void Awake()
         {
             canMove = true;
@@ -82,6 +87,37 @@ namespace EasyPeasyFirstPersonController
             slideAudioSource.playOnAwake = false;
             slideAudioSource.loop = false;
             Cursor.lockState = CursorLockMode.Locked;
+        }
+        public void ApplySpeedBoost(float boostMultiplier, float duration)
+        {
+            if (speedBoostCoroutine != null)
+                StopCoroutine(speedBoostCoroutine);
+
+            speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(boostMultiplier, duration));
+        }
+
+        private IEnumerator SpeedBoostRoutine(float boostMultiplier, float duration)
+        {
+            isSpeedBoosted = true;
+            float originalWalkSpeed = walkSpeed;
+            float originalSprintSpeed = sprintSpeed;
+            float originalCrouchSpeed = crouchSpeed;
+            float originalSlideSpeed = slideSpeed;
+
+            walkSpeed *= boostMultiplier;
+            sprintSpeed *= boostMultiplier;
+            crouchSpeed *= boostMultiplier;
+            slideSpeed *= boostMultiplier;
+
+            yield return new WaitForSeconds(duration);
+
+            walkSpeed = originalWalkSpeed;
+            sprintSpeed = originalSprintSpeed;
+            crouchSpeed = originalCrouchSpeed;
+            slideSpeed = originalSlideSpeed;
+
+            isSpeedBoosted = false;
+            speedBoostCoroutine = null;
         }
 
         private void Update()
