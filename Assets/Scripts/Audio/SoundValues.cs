@@ -5,12 +5,9 @@ namespace SmallHedge.SoundManager
 {
     public enum SoundType
     {
-        Miaw,
+        BoosterTake,
         Music,
-        lamp,
-        birds,
-        yawn,
-        clothes,
+        Menu,
        
     }
 }
