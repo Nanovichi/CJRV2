@@ -70,10 +70,15 @@ namespace EasyPeasyFirstPersonController
         // HeadBob
         public float CurrentCameraHeight => isCrouching || isSliding ? crouchCameraHeight : originalCameraParentHeight;
 
-
+        float originalWalkSpeed;
+        float originalSprintSpeed;
         private bool isSpeedBoosted = false;
         private Coroutine speedBoostCoroutine;
-
+        private void Start()
+        {
+            originalWalkSpeed = walkSpeed;
+            originalSprintSpeed = sprintSpeed;
+        }
 
         private void Awake()
         {
@@ -99,22 +104,18 @@ namespace EasyPeasyFirstPersonController
         private IEnumerator SpeedBoostRoutine(float boostMultiplier, float duration)
         {
             isSpeedBoosted = true;
-            float originalWalkSpeed = walkSpeed;
-            float originalSprintSpeed = sprintSpeed;
-            float originalCrouchSpeed = crouchSpeed;
-            float originalSlideSpeed = slideSpeed;
+           
+           
 
             walkSpeed *= boostMultiplier;
             sprintSpeed *= boostMultiplier;
-            crouchSpeed *= boostMultiplier;
-            slideSpeed *= boostMultiplier;
+        
 
             yield return new WaitForSeconds(duration);
 
             walkSpeed = originalWalkSpeed;
             sprintSpeed = originalSprintSpeed;
-            crouchSpeed = originalCrouchSpeed;
-            slideSpeed = originalSlideSpeed;
+       
 
             isSpeedBoosted = false;
             speedBoostCoroutine = null;

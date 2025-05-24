@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,9 +16,19 @@ public class AiMovement : MonoBehaviour
     private NavMeshAgent agent;
     private int currentWaypointIndex = 0;
 
+    private bool isSpeedBoosted = false;
+    private Coroutine speedBoostCoroutine;
+    public float speedGrowthRate = 0.1f; // how much to grow per interval
+    public float speedGrowthInterval = 10f; // how often (in seconds) to grow speed
+    private float speedGrowthTimer;
+
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+
+        speedGrowthTimer = speedGrowthInterval;
+
 
         agent.speed = Random.Range(minSpeed, maxSpeed);
         agent.avoidancePriority = Random.Range(50, 100);
@@ -37,26 +48,63 @@ public class AiMovement : MonoBehaviour
             agent.SetDestination(waypoints[0].position);
         }
     }
+    public void ApplySpeedBoost(float boostMultiplier, float duration)
+    {
+        if (speedBoostCoroutine != null)
+            StopCoroutine(speedBoostCoroutine);
 
+        speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(boostMultiplier, duration));
+    }
+
+    private IEnumerator SpeedBoostRoutine(float boostMultiplier, float duration)
+    {
+        isSpeedBoosted = true;
+        float originalSpeed = agent.speed;
+
+        agent.speed *= boostMultiplier;
+      
+
+        yield return new WaitForSeconds(duration);
+
+       agent.speed = originalSpeed; 
+
+        isSpeedBoosted = false;
+        speedBoostCoroutine = null;
+    }
     void Update()
     {
         if (waypoints.Count == 0) return;
 
+        // Speed randomizer every few seconds
         speedChangeTimer -= Time.deltaTime;
-        if (speedChangeTimer <= 0f)
+        if (speedChangeTimer <= 0f && !isSpeedBoosted)
         {
             agent.speed = Random.Range(minSpeed, maxSpeed);
             speedChangeTimer = speedChangeInterval;
         }
 
+        // Waypoint navigation
         if (!agent.pathPending && agent.remainingDistance <= stoppingDistance)
         {
             currentWaypointIndex++;
-
             if (currentWaypointIndex < waypoints.Count)
             {
                 agent.SetDestination(waypoints[currentWaypointIndex].position);
             }
         }
+
+        // Speed scaling over time
+        speedGrowthTimer -= Time.deltaTime;
+        if (speedGrowthTimer <= 0f)
+        {
+            minSpeed += speedGrowthRate;
+            maxSpeed += speedGrowthRate;
+            speedGrowthTimer = speedGrowthInterval;
+
+            // Optionally clamp to prevent it from getting too fast
+            minSpeed = Mathf.Min(minSpeed, 15f);
+            maxSpeed = Mathf.Min(maxSpeed, 20f);
+        }
     }
+
 }

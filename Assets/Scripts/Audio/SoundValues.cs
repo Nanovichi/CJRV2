@@ -8,6 +8,7 @@ namespace SmallHedge.SoundManager
         BoosterTake,
         Music,
         Menu,
+
        
     }
 }
