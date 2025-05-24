@@ -7,10 +7,13 @@ namespace EasyPeasyFirstPersonController
 
     public partial class FirstPersonController : MonoBehaviour
     {
+        public float minSpeed = 3f;
+        public float maxSpeed = 15f;
 
         public bool canMove = true;
         [Range(0, 100)] public float mouseSensitivity = 25f;
         [Range(0f, 200f)] public float snappiness = 100f;
+        
         public float moveSpeed = 3f;
         public float walkSpeed = 3f;
         public float sprintSpeed = 5f;
@@ -22,6 +25,7 @@ namespace EasyPeasyFirstPersonController
         public float slideFovBoost = 5f;
         public float slideTiltAngle = 5f;
         public float gravity = -9.81f;
+        
         public float jumpHeight = 1.5f;
         public float airControl = 0.3f;
         public bool coyoteTimeEnabled = true;
@@ -77,15 +81,12 @@ namespace EasyPeasyFirstPersonController
         // HeadBob
         public float CurrentCameraHeight => isCrouching || isSliding ? crouchCameraHeight : originalCameraParentHeight;
 
-        float originalWalkSpeed;
-        float originalSprintSpeed;
+        
+        public float minSpeed2 = 3f;
+        public float maxSpeed2 = 15f;
         private bool isSpeedBoosted = false;
         private Coroutine speedBoostCoroutine;
-        private void Start()
-        {
-            originalWalkSpeed = walkSpeed;
-            originalSprintSpeed = sprintSpeed;
-        }
+      
 
         private void Awake()
         {
@@ -110,19 +111,18 @@ namespace EasyPeasyFirstPersonController
 
         private IEnumerator SpeedBoostRoutine(float boostMultiplier, float duration)
         {
-            isSpeedBoosted = true;
-           
-           
 
-            walkSpeed *= boostMultiplier;
-            sprintSpeed *= boostMultiplier;
-        
+            float originalWalkspeed = walkSpeed;
+            float originalSprintspeed = sprintSpeed;    
+            isSpeedBoosted = true;
+
+            walkSpeed = Mathf.Clamp(walkSpeed * boostMultiplier, minSpeed2, maxSpeed2);
+            sprintSpeed = Mathf.Clamp(sprintSpeed * boostMultiplier, minSpeed2, maxSpeed2);
 
             yield return new WaitForSeconds(duration);
 
-            walkSpeed = originalWalkSpeed;
-            sprintSpeed = originalSprintSpeed;
-       
+            walkSpeed = originalWalkspeed;
+            sprintSpeed = originalSprintspeed;
 
             isSpeedBoosted = false;
             speedBoostCoroutine = null;
@@ -131,14 +131,13 @@ namespace EasyPeasyFirstPersonController
 
         public void ApplyPermanentSpeedBoost(float boostMultiplier)
         {
-            walkSpeed *= boostMultiplier;
-            sprintSpeed *= boostMultiplier;
+            walkSpeed = Mathf.Clamp(walkSpeed * boostMultiplier, minSpeed2, maxSpeed2);
+            sprintSpeed = Mathf.Clamp(sprintSpeed * boostMultiplier, minSpeed2, maxSpeed2);
 
-            // Also update moveSpeed if needed to reflect the change immediately
             moveSpeed = walkSpeed;
         }
-       
-       
+
+
         private void Update()
         {
             if (canMove)

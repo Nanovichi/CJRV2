@@ -63,8 +63,17 @@ namespace rayzngames
 		[HeaderAttribute("Speed M/s")]
 		[SerializeField] float currentSpeed;
 
-		// Start is called before the first frame update
-		void Start()
+        private bool useAIControl = false;
+        private Vector2 aiInput;
+
+        public void SetAIInput(Vector2 input)
+        {
+            aiInput = input;
+            useAIControl = true;
+        }
+
+        // Start is called before the first frame update
+        void Start()
 		{
 			frontContact = frontTrail.transform.GetChild(0).GetComponent<ContactProvider>();
 			rearContact = rearTrail.transform.GetChild(0).GetComponent<ContactProvider>();		
@@ -92,10 +101,19 @@ namespace rayzngames
 
 		private void GetInput()
 		{
-			horizontalInput = Input.GetAxis("Horizontal");
-			verticalInput = Input.GetAxis("Vertical");
-			braking = Input.GetKey(KeyCode.Space);
-		}
+            if (useAIControl)
+            {
+                horizontalInput = aiInput.x;
+                verticalInput = aiInput.y;
+                braking = false;
+            }
+            else
+            {
+                horizontalInput = Input.GetAxis("Horizontal");
+                verticalInput = Input.GetAxis("Vertical");
+                braking = Input.GetKey(KeyCode.Space);
+            }
+        }
 
 		private void HandleEngine()
 		{		

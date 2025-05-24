@@ -8,6 +8,8 @@ public class Bicycle : MonoBehaviour, IInteractable
     public CameraController CameraController;
     public Camera Camera;
     public Transform targetPosition;
+
+    public Transform setPlayerPosition;
     public void Interact()
     {
         FirstPersonController.canMove = false;
@@ -24,6 +26,8 @@ public class Bicycle : MonoBehaviour, IInteractable
 
         // Rotate the camera 180 degrees around the Y-axis
         Camera.transform.rotation = Quaternion.Euler(Camera.transform.rotation.eulerAngles + new Vector3(0, 180f, 0));
+
+        this.transform.position = setPlayerPosition.position;
     }
 
 }
