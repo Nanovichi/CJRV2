@@ -49634,7 +49634,7 @@ MonoBehaviour:
   CameraController: {fileID: 0}
   Camera: {fileID: 330585545}
   targetPosition: {fileID: 346821851}
-  setPlayerPosition: {fileID: 0}
+  setPlayerPosition: {fileID: 571648454}
 --- !u!134 &737832465
 PhysicsMaterial:
   m_ObjectHideFlags: 0
@@ -56034,15 +56034,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 653725680723774863, guid: ea714c75776e0674880298b9e1c70fe8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 740.93
+      value: 1280.71
       objectReference: {fileID: 0}
     - target: {fileID: 653725680723774863, guid: ea714c75776e0674880298b9e1c70fe8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 13.484
+      value: 15.26
       objectReference: {fileID: 0}
     - target: {fileID: 653725680723774863, guid: ea714c75776e0674880298b9e1c70fe8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 685.89
+      value: 1543.4
       objectReference: {fileID: 0}
     - target: {fileID: 653725680723774863, guid: ea714c75776e0674880298b9e1c70fe8, type: 3}
       propertyPath: m_LocalRotation.w
