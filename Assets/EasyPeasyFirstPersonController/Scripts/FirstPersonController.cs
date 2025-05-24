@@ -1,5 +1,6 @@
 namespace EasyPeasyFirstPersonController
 {
+    using SmallHedge.SoundManager;
     using System;
     using System.Collections;
     using UnityEngine;
@@ -63,6 +64,12 @@ namespace EasyPeasyFirstPersonController
         private AudioSource slideAudioSource;
         private float bobTimer;
 
+
+        public float boostedSpeed = 10f;
+        public float boostDuration = 2f;
+        private float originalSpeed;
+        private bool isBoosted = false;
+
         private bool isLook = true, isMove = true;
         public bool IsMove => isMove;
         public bool IsLook => isLook;
@@ -121,6 +128,17 @@ namespace EasyPeasyFirstPersonController
             speedBoostCoroutine = null;
         }
 
+
+        public void ApplyPermanentSpeedBoost(float boostMultiplier)
+        {
+            walkSpeed *= boostMultiplier;
+            sprintSpeed *= boostMultiplier;
+
+            // Also update moveSpeed if needed to reflect the change immediately
+            moveSpeed = walkSpeed;
+        }
+       
+       
         private void Update()
         {
             if (canMove)
@@ -221,15 +239,7 @@ namespace EasyPeasyFirstPersonController
                         Time.deltaTime * 15f);
                 }
 
-                // Jumping
-                if (canJump && Input.GetKeyDown(KeyCode.Space) && (isGrounded || (coyoteTimeEnabled && coyoteTimer > 0f)) && !isSliding)
-                {
-                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                    coyoteTimer = 0f;
-                }
-                else if (Input.GetKeyDown(KeyCode.Space))
-                {
-                }
+              
 
                 velocity.y += gravity * Time.deltaTime;
                 characterController.Move(velocity * Time.deltaTime);
@@ -289,4 +299,6 @@ namespace EasyPeasyFirstPersonController
             Cursor.visible = newVisibility;
         }
     }
+
+    
 }
