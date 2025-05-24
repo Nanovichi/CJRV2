@@ -9,10 +9,9 @@ public class Bicycle : MonoBehaviour, IInteractable
     public Camera Camera;
     public Transform targetPosition;
 
-    public Transform PlayerNewPosition;
+  
     public void Interact()
     {
-        FirstPersonController.transform.position = PlayerNewPosition.position;
         FirstPersonController.canMove = false;
 
         // Attach the player to the bicycle
